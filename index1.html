@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Multi-Step Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+        }
+        .container {
+            width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+        }
+        button {
+            width: 100%;
+            padding: 8px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .captcha {
+            font-weight: bold;
+            margin: 10px 0;
+            text-align: center;
+            background: #eee;
+            padding: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <form id="myForm">
+        <!-- Initial Fields -->
+        <input type="text" id="fname" placeholder="First Name" required>
+        <input type="text" id="lname" placeholder="Last Name" required>
+
+        <!-- Captcha Section -->
+        <div id="captchaSection" class="hidden">
+            <div id="captchaText" class="captcha"></div>
+            <input type="text" id="captchaInput" placeholder="Enter Captcha">
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+    let firstSubmit = true;
+    let captchaValue = "";
+
+    function generateCaptcha() {
+        captchaValue = Math.floor(1000 + Math.random() * 9000).toString();
+        document.getElementById("captchaText").innerText = captchaValue;
+    }
+
+    document.getElementById("myForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        if (firstSubmit) {
+            document.getElementById("captchaSection").classList.remove("hidden");
+            document.getElementById("captchaInput").setAttribute("required", true);
+            generateCaptcha();
+            firstSubmit = false;
+        } else {
+            const userCaptcha = document.getElementById("captchaInput").value;
+            if (userCaptcha === captchaValue) {
+                alert("Submitted successfully");
+            } else {
+                alert("Invalid captcha");
+                generateCaptcha();
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
+
+
+
